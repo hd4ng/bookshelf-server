@@ -1,21 +1,16 @@
-# In Docker
-# - TEST_POSTGRES_URI=postgres://bookshelf:bookshelf@postgres/
-# Outside Docker
-# - TEST_POSTGRES_URI=postgres://bookshelf:bookshelf@localhost:5432/
-
 version: '3.8'
 
 services:
-  postgres:
-    container_name: bookshelf_backend_rest_container_postgres
+  database:
+    container_name: bookshelf_server_container
     image: postgres
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-unicorn_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-magical_password}
       PGDATA: /data/postgres
-      POSTGRES_DB: ${POSTGRES_DB:-bookshelf}
+      POSTGRES_DB: ${POSTGRES_DB:-rainbow_database}
     volumes:
-      - postgres:/data/postgres
+      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
     ports:
       - '5432:5432'
     networks:
@@ -27,4 +22,5 @@ networks:
     driver: bridge
 
 volumes:
-  postgres:
+  database-data: # named volumes can be managed easier using docker-compose
+
